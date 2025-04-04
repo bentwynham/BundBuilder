@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Collapsible Bund Builder - Chatoyer Environmental</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            -webkit-text-size-adjust: 100%;
+        }
+        .header {
+            background-color: #2E85C6;
+            padding: 15px 20px;
+            color: white;
+            text-align: left;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header img {
+            height: 35px;
+            max-width: 100%;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 15px;
+            box-sizing: border-box;
+        }
+        .calculator {
+            background-color: white;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            font-size: 22px;
+            margin: 0 0 25px 0;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #444;
+            font-weight: 500;
+            font-size: 15px;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+            background-color: white;
+            -webkit-appearance: none;
+            appearance: none;
+            margin: 0;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #2E85C6;
+            box-shadow: 0 0 0 2px rgba(46,133,198,0.1);
+        }
+        /* Fix for iOS input zoom */
+        input[type="number"],
+        input[type="text"] {
+            font-size: 16px !important;
+        }
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23666' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 16px;
+            color: #2E85C6;
+            font-weight: 500;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        @media (max-width: 480px) {
+            .button-group {
+                flex-direction: column;
+            }
+            .container {
+                margin: 10px auto;
+            }
+            .calculator {
+                padding: 15px;
+            }
+            h1 {
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+        }
+        .reset-button,
+        .enquire-button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .reset-button {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .reset-button:hover {
+            background-color: #e9ecef;
+        }
+        .enquire-button {
+            background-color: #2E85C6;
+            color: white;
+        }
+        .enquire-button:hover {
+            background-color: #1a6ba3;
+        }
+        .contact-info {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            padding: 10px;
+        }
+        .contact-info p {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+        }
+        .phone {
+            color: #2E85C6;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            padding: 5px 10px;
+        }
+        /* Touch-friendly improvements */
+        @media (hover: none) {
+            .reset-button, .enquire-button, .phone {
+                -webkit-tap-highlight-color: transparent;
+            }
+            input, select {
+                padding: 12px 15px;
+                min-height: 44px;
+            }
+        }
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            input, select {
+                background-color: #ffffff;
+            }
+        }
+        /* Add table styles */
+        .compatibility-table {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            display: table;
+        }
+        .compatibility-table th,
+        .compatibility-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+            font-size: 14px;
+        }
+        .compatibility-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #444;
+        }
+        /* Set column widths */
+        .compatibility-table th:nth-child(1),
+        .compatibility-table td:nth-child(1) {
+            width: 35%;
+        }
+        .compatibility-table th:nth-child(2),
+        .compatibility-table td:nth-child(2) {
+            width: 40%;
+        }
+        .compatibility-table th:nth-child(3),
+        .compatibility-table td:nth-child(3) {
+            width: 25%;
+            text-align: center;
+        }
+        .compatibility-table td.not-recommended {
+            color: #ff0000;
+            font-weight: 500;
+        }
+        .compatibility-table td.little-effect {
+            background-color: #228B22;
+            color: white;
+            font-weight: 500;
+            padding: 10px;
+            border-radius: 2px;
+        }
+        .compatibility-table td.some-effect {
+            color: #ffa500;
+            font-weight: 500;
+        }
+        .compatibility-table tr:hover {
+            background-color: #f8f9fa;
+        }
+        /* Checkbox styles */
+        .material-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #2E85C6;
+            margin: 0 auto;
+            display: block;
+            position: relative;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            border: 2px solid #ddd;
+            border-radius: 3px;
+            background-color: white;
+            transition: all 0.2s ease;
+        }
+
+        .material-checkbox:checked {
+            background-color: #2E85C6;
+            border-color: #2E85C6;
+        }
+
+        .material-checkbox:checked::after {
+            content: '✕';
+            position: absolute;
+            color: white;
+            font-size: 14px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+        }
+
+        .material-checkbox:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+            background-color: #f8f9fa;
+        }
+
+        .material-checkbox:not(:disabled):hover {
+            border-color: #2E85C6;
+        }
+        h2 {
+            color: #333;
+            font-size: 18px;
+            margin: 25px 0 15px 0;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        .modal-content {
+            position: relative;
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        /* Add smooth scrolling */
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        .modal-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        .modal-content::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        .modal-content::-webkit-scrollbar-thumb:hover {
+            background: #666;
+        }
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        .quote-form {
+            margin-top: 20px;
+        }
+        .quote-form .form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 15px;
+            font-size: 14px;
+        }
+        .quote-form label {
+            flex: 0 0 80px;
+            margin-bottom: 0;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .quote-form input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            margin: 0;
+        }
+        .quote-summary {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .quote-summary h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 16px;
+        }
+        .quote-summary p {
+            margin: 5px 0;
+            color: #666;
+        }
+        .quote-summary table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        .quote-summary td {
+            padding: 8px 0;
+            vertical-align: top;
+        }
+        .quote-summary td:first-child {
+            font-weight: 500;
+            width: 40%;
+            color: #333;
+        }
+        .quote-summary td:last-child {
+            color: #666;
+        }
+        .material-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .material-list li {
+            margin-bottom: 4px;
+        }
+        .submit-button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            background-color: #2E85C6;
+            color: white;
+            transition: background-color 0.3s;
+            text-transform: uppercase;
+        }
+        .submit-button:hover {
+            background-color: #1a6ba3;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="https://www.chatoyer.com.au/wp-content/themes/chatoyer/images/logo.png" alt="Chatoyer Environmental">
+    </div>
+    <div class="container">
+        <div class="calculator">
+            <h1>Collapsible Bund Builder</h1>
+            <div class="input-group">
+                <label for="length">Length (meters):</label>
+                <input type="number" id="length" step="0.01" placeholder="Enter length">
+            </div>
+            <div class="input-group">
+                <label for="width">Width (meters):</label>
+                <input type="number" id="width" step="0.01" placeholder="Enter width">
+            </div>
+            <div class="input-group">
+                <label for="height">Height (meters):</label>
+                <select id="height">
+                    <option value="0.3">0.3 meters</option>
+                    <option value="0.5">0.5 meters</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="capacity">Capacity (litres):</label>
+                <input type="number" id="capacity" step="0.01" placeholder="Enter capacity">
+            </div>
+            <div class="input-group">
+                <label for="liquid-type">Liquid Type:</label>
+                <input type="text" id="liquid-type" list="chemicals" placeholder="Start typing to search...">
+                <datalist id="chemicals">
+                    <option value="Acetic Acid">
+                    <option value="Acetone">
+                    <option value="Aluminum Chloride">
+                    <option value="Ammonia">
+                    <option value="Ammonium Hydroxide">
+                    <option value="Boric Acid">
+                    <option value="Calcium Chloride">
+                    <option value="Citric Acid">
+                    <option value="Crude Oil">
+                    <option value="Diesel Fuel">
+                </datalist>
+            </div>
+            <div class="input-group">
+                <label for="unlisted-liquid">Liquid Type not listed:</label>
+                <input type="text" id="unlisted-liquid" placeholder="Enter liquid type if not found above">
+            </div>
+            <h2>Compatibility Table</h2>
+            <table class="compatibility-table" id="compatibility-table">
+                <thead>
+                    <tr>
+                        <th>Material Type</th>
+                        <th>Compatibility</th>
+                        <th>Select Material</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>900gsm PVC 20°C</td>
+                        <td id="pvc20-result">-</td>
+                        <td><input type="checkbox" class="material-checkbox" id="pvc20-select" disabled></td>
+                    </tr>
+                    <tr>
+                        <td>900gsm PVC 60°C</td>
+                        <td id="pvc60-result">-</td>
+                        <td><input type="checkbox" class="material-checkbox" id="pvc60-select" disabled></td>
+                    </tr>
+                    <tr>
+                        <td>XR-5</td>
+                        <td id="xr5-result">-</td>
+                        <td><input type="checkbox" class="material-checkbox" id="xr5-select" disabled></td>
+                    </tr>
+                    <tr>
+                        <td>CoolGuard HRL</td>
+                        <td id="coolguard-result">-</td>
+                        <td><input type="checkbox" class="material-checkbox" id="coolguard-select" disabled></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="button-group">
+                <button class="reset-button" id="reset-button">RESET</button>
+                <button class="enquire-button" id="quote-button">GET A QUOTE</button>
+            </div>
+            <div class="contact-info">
+                <p>Need assistance? Contact us</p>
+                <a href="tel:1300880623" class="phone">1300 880 623</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quote Form Modal -->
+    <div id="quote-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Request a Quote</h2>
+            <div class="quote-summary">
+                <h3>Bund Specifications</h3>
+                <table>
+                    <tr>
+                        <td>Length:</td>
+                        <td id="quote-length"></td>
+                    </tr>
+                    <tr>
+                        <td>Width:</td>
+                        <td id="quote-width"></td>
+                    </tr>
+                    <tr>
+                        <td>Height:</td>
+                        <td id="quote-height"></td>
+                    </tr>
+                    <tr>
+                        <td>Capacity:</td>
+                        <td id="quote-capacity"></td>
+                    </tr>
+                    <tr>
+                        <td>Liquid Type:</td>
+                        <td id="quote-liquid"></td>
+                    </tr>
+                    <tr>
+                        <td>Selected Materials:</td>
+                        <td id="quote-material"></td>
+                    </tr>
+                </table>
+            </div>
+            <h2>Your Details</h2>
+            <form class="quote-form" id="quote-form">
+                <div class="form-row">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" required>
+                </div>
+                
+                <div class="form-row">
+                    <label for="company">Company:</label>
+                    <input type="text" id="company" required>
+                </div>
+                
+                <div class="form-row">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" required>
+                </div>
+
+                <div class="form-row">
+                    <label for="phone">Phone:</label>
+                    <input type="tel" id="phone" required>
+                </div>
+
+                <h2>Freight Details</h2>
+                
+                <div class="form-row">
+                    <label for="quantity">Bund Qty:</label>
+                    <input type="number" id="quantity" required min="1">
+                </div>
+
+                <div class="form-row">
+                    <label for="suburb">Suburb:</label>
+                    <input type="text" id="suburb" required>
+                </div>
+
+                <div class="form-row">
+                    <label for="postcode">Post/ZIP Code:</label>
+                    <input type="text" id="postcode" required>
+                </div>
+
+                <div class="form-row">
+                    <label for="country">Country:</label>
+                    <input type="text" id="country" list="countries" placeholder="Start typing to search..." value="Australia" required>
+                    <datalist id="countries">
+                        <option value="Afghanistan">
+                        <option value="Albania">
+                        <option value="Algeria">
+                        <option value="Andorra">
+                        <option value="Angola">
+                        <option value="Antigua and Barbuda">
+                        <option value="Argentina">
+                        <option value="Armenia">
+                        <option value="Australia">
+                        <option value="Austria">
+                        <option value="Azerbaijan">
+                        <option value="Bahamas">
+                        <option value="Bahrain">
+                        <option value="Bangladesh">
+                        <option value="Barbados">
+                        <option value="Belarus">
+                        <option value="Belgium">
+                        <option value="Belize">
+                        <option value="Benin">
+                        <option value="Bhutan">
+                        <option value="Bolivia">
+                        <option value="Bosnia and Herzegovina">
+                        <option value="Botswana">
+                        <option value="Brazil">
+                        <option value="Brunei">
+                        <option value="Bulgaria">
+                        <option value="Burkina Faso">
+                        <option value="Burundi">
+                        <option value="Cambodia">
+                        <option value="Cameroon">
+                        <option value="Canada">
+                        <option value="Cape Verde">
+                        <option value="Central African Republic">
+                        <option value="Chad">
+                        <option value="Chile">
+                        <option value="China">
+                        <option value="Colombia">
+                        <option value="Comoros">
+                        <option value="Congo">
+                        <option value="Costa Rica">
+                        <option value="Croatia">
+                        <option value="Cuba">
+                        <option value="Cyprus">
+                        <option value="Czech Republic">
+                        <option value="Denmark">
+                        <option value="Djibouti">
+                        <option value="Dominica">
+                        <option value="Dominican Republic">
+                        <option value="East Timor">
+                        <option value="Ecuador">
+                        <option value="Egypt">
+                        <option value="El Salvador">
+                        <option value="Equatorial Guinea">
+                        <option value="Eritrea">
+                        <option value="Estonia">
+                        <option value="Ethiopia">
+                        <option value="Fiji">
+                        <option value="Finland">
+                        <option value="France">
+                        <option value="Gabon">
+                        <option value="Gambia">
+                        <option value="Georgia">
+                        <option value="Germany">
+                        <option value="Ghana">
+                        <option value="Greece">
+                        <option value="Grenada">
+                        <option value="Guatemala">
+                        <option value="Guinea">
+                        <option value="Guinea-Bissau">
+                        <option value="Guyana">
+                        <option value="Haiti">
+                        <option value="Honduras">
+                        <option value="Hungary">
+                        <option value="Iceland">
+                        <option value="India">
+                        <option value="Indonesia">
+                        <option value="Iran">
+                        <option value="Iraq">
+                        <option value="Ireland">
+                        <option value="Israel">
+                        <option value="Italy">
+                        <option value="Jamaica">
+                        <option value="Japan">
+                        <option value="Jordan">
+                        <option value="Kazakhstan">
+                        <option value="Kenya">
+                        <option value="Kiribati">
+                        <option value="Korea, North">
+                        <option value="Korea, South">
+                        <option value="Kuwait">
+                        <option value="Kyrgyzstan">
+                        <option value="Laos">
+                        <option value="Latvia">
+                        <option value="Lebanon">
+                        <option value="Lesotho">
+                        <option value="Liberia">
+                        <option value="Libya">
+                        <option value="Liechtenstein">
+                        <option value="Lithuania">
+                        <option value="Luxembourg">
+                        <option value="Macedonia">
+                        <option value="Madagascar">
+                        <option value="Malawi">
+                        <option value="Malaysia">
+                        <option value="Maldives">
+                        <option value="Mali">
+                        <option value="Malta">
+                        <option value="Marshall Islands">
+                        <option value="Mauritania">
+                        <option value="Mauritius">
+                        <option value="Mexico">
+                        <option value="Micronesia">
+                        <option value="Moldova">
+                        <option value="Monaco">
+                        <option value="Mongolia">
+                        <option value="Montenegro">
+                        <option value="Morocco">
+                        <option value="Mozambique">
+                        <option value="Myanmar">
+                        <option value="Namibia">
+                        <option value="Nauru">
+                        <option value="Nepal">
+                        <option value="Netherlands">
+                        <option value="New Zealand">
+                        <option value="Nicaragua">
+                        <option value="Niger">
+                        <option value="Nigeria">
+                        <option value="Norway">
+                        <option value="Oman">
+                        <option value="Pakistan">
+                        <option value="Palau">
+                        <option value="Panama">
+                        <option value="Papua New Guinea">
+                        <option value="Paraguay">
+                        <option value="Peru">
+                        <option value="Philippines">
+                        <option value="Poland">
+                        <option value="Portugal">
+                        <option value="Qatar">
+                        <option value="Romania">
+                        <option value="Russia">
+                        <option value="Rwanda">
+                        <option value="Saint Kitts and Nevis">
+                        <option value="Saint Lucia">
+                        <option value="Saint Vincent and the Grenadines">
+                        <option value="Samoa">
+                        <option value="San Marino">
+                        <option value="Sao Tome and Principe">
+                        <option value="Saudi Arabia">
+                        <option value="Senegal">
+                        <option value="Serbia">
+                        <option value="Seychelles">
+                        <option value="Sierra Leone">
+                        <option value="Singapore">
+                        <option value="Slovakia">
+                        <option value="Slovenia">
+                        <option value="Solomon Islands">
+                        <option value="Somalia">
+                        <option value="South Africa">
+                        <option value="South Sudan">
+                        <option value="Spain">
+                        <option value="Sri Lanka">
+                        <option value="Sudan">
+                        <option value="Suriname">
+                        <option value="Swaziland">
+                        <option value="Sweden">
+                        <option value="Switzerland">
+                        <option value="Syria">
+                        <option value="Taiwan">
+                        <option value="Tajikistan">
+                        <option value="Tanzania">
+                        <option value="Thailand">
+                        <option value="Togo">
+                        <option value="Tonga">
+                        <option value="Trinidad and Tobago">
+                        <option value="Tunisia">
+                        <option value="Turkey">
+                        <option value="Turkmenistan">
+                        <option value="Tuvalu">
+                        <option value="Uganda">
+                        <option value="Ukraine">
+                        <option value="United Arab Emirates">
+                        <option value="United Kingdom">
+                        <option value="United States">
+                        <option value="Uruguay">
+                        <option value="Uzbekistan">
+                        <option value="Vanuatu">
+                        <option value="Vatican City">
+                        <option value="Venezuela">
+                        <option value="Vietnam">
+                        <option value="Yemen">
+                        <option value="Zambia">
+                        <option value="Zimbabwe">
+                    </datalist>
+                </div>
+                
+                <button type="submit" class="submit-button">SUBMIT QUOTE REQUEST</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const inputs = ['length', 'width', 'height', 'capacity'];
+        const inputElements = inputs.map(id => document.getElementById(id));
+        let lastCalculated = null;
+
+        // Chemical compatibility data
+        const chemicalData = {
+            "Acetic Acid": {
+                pvc20: "Little or no effect",
+                pvc60: "Some effect",
+                xr5: "Little or no effect",
+                coolguard: "Little or no effect"
+            },
+            "Acetone": {
+                pvc20: "Not recommended",
+                pvc60: "Not recommended",
+                xr5: "Little or no effect",
+                coolguard: "Little or no effect"
+            },
+            "Aluminum Chloride": {
+                pvc20: "Little or no effect",
+                pvc60: "Some effect",
+                xr5: "Little or no effect",
+                coolguard: "Little or no effect"
+            },
+            "Ammonia": {
+                pvc20: "Little or no effect",
+                pvc60: "Some effect",
+                xr5: "Little or no effect",
+                coolguard: "Little or no effect"
+            },
+            "Ammonium Hydroxide": {
+                pvc20: "Some effect",
+                pvc60: "Not recommended",
+                xr5: "Little or no effect",
+                coolguard: "Little or no effect"
+            },
+            "Boric Acid": {
+                pvc20: "Little or no effect",
+                pvc60: "Some effect",
+                xr5: "Little or no effect",
+                coolguard: "Little or no effect"
+            },
+            "Calcium Chloride": {
+                pvc20: "Little or no effect",
+                pvc60: "Some effect",
+                xr5: "Little or no effect",
+                coolguard: "Little or no effect"
+            },
+            "Citric Acid": {
+                pvc20: "Little or no effect",
+                pvc60: "Some effect",
+                xr5: "Little or no effect",
+                coolguard: "Little or no effect"
+            },
+            "Crude Oil": {
+                pvc20: "Some effect",
+                pvc60: "Not recommended",
+                xr5: "Little or no effect",
+                coolguard: "Little or no effect"
+            },
+            "Diesel Fuel": {
+                pvc20: "Some effect",
+                pvc60: "Not recommended",
+                xr5: "Little or no effect",
+                coolguard: "Little or no effect"
+            }
+        };
+
+        // Update datalist with chemicals
+        const datalist = document.getElementById('chemicals');
+        datalist.innerHTML = ''; // Clear existing options
+        Object.keys(chemicalData).forEach(chemical => {
+            const option = document.createElement('option');
+            option.value = chemical;
+            datalist.appendChild(option);
+        });
+
+        function resetCalculator() {
+            document.getElementById('length').value = '';
+            document.getElementById('width').value = '';
+            document.getElementById('capacity').value = '';
+            document.getElementById('liquid-type').value = '';
+            document.getElementById('unlisted-liquid').value = '';
+            lastCalculated = null;
+        }
+
+        document.getElementById('reset-button').addEventListener('click', resetCalculator);
+
+        function calculate() {
+            const values = inputElements.map(input => {
+                if (input.id === 'height') {
+                    return parseFloat(input.value);
+                }
+                return input.value.trim() ? parseFloat(input.value) : null;
+            });
+            
+            const [length, width, height, capacity] = values;
+
+            // If a field is being edited, update calculations based on the current edit
+            if (document.activeElement && document.activeElement.tagName === 'INPUT') {
+                const currentInput = document.activeElement;
+                
+                // If the current input is empty or invalid, don't calculate
+                if (!currentInput.value || isNaN(parseFloat(currentInput.value))) {
+                    return;
+                }
+
+                // Determine which field to calculate based on what's being edited
+                switch (currentInput.id) {
+                    case 'capacity':
+                        // When editing capacity, adjust length
+                        if (width && height) {
+                            lastCalculated = 'length';
+                        }
+                        break;
+                    case 'length':
+                    case 'width':
+                        // When editing length or width, recalculate capacity
+                        if (height && (length || width)) {
+                            lastCalculated = 'capacity';
+                        }
+                        break;
+                }
+            }
+
+            // Calculate based on available values
+            if (width && height && capacity && (!length || lastCalculated === 'length')) {
+                // Calculate length based on capacity
+                const calculatedLength = capacity / (width * height * 1000);
+                document.getElementById('length').value = calculatedLength.toFixed(1);
+                lastCalculated = 'length';
+            }
+            else if (length && height && capacity && (!width || lastCalculated === 'width')) {
+                // Calculate width based on capacity
+                const calculatedWidth = capacity / (length * height * 1000);
+                document.getElementById('width').value = calculatedWidth.toFixed(1);
+                lastCalculated = 'width';
+            }
+            else if (length && width && height) {
+                // Calculate capacity based on dimensions
+                const volume = length * width * height * 1000;
+                document.getElementById('capacity').value = Math.round(volume);
+                lastCalculated = 'capacity';
+            }
+        }
+
+        inputElements.forEach(input => {
+            if (input.tagName === 'INPUT') {
+                // Handle input events for more responsive updating
+                input.addEventListener('input', function(e) {
+                    // Allow field clearing
+                    if (!e.target.value) {
+                        return;
+                    }
+                    
+                    // Only calculate if the value is valid
+                    if (!isNaN(parseFloat(e.target.value))) {
+                        calculate();
+                    }
+                });
+
+                // Handle focus to allow editing
+                input.addEventListener('focus', function(e) {
+                    // When focusing on a field, it becomes editable
+                    if (lastCalculated === e.target.id) {
+                        lastCalculated = null;
+                    }
+                });
+
+                // Handle blur to recalculate after editing
+                input.addEventListener('blur', function(e) {
+                    if (e.target.value && !isNaN(parseFloat(e.target.value))) {
+                        calculate();
+                    }
+                });
+            } else {
+                input.addEventListener('change', calculate);
+            }
+        });
+
+        // Function to update compatibility table
+        function updateCompatibilityTable(chemical) {
+            const table = document.getElementById('compatibility-table');
+            const pvc20Result = document.getElementById('pvc20-result');
+            const pvc60Result = document.getElementById('pvc60-result');
+            const xr5Result = document.getElementById('xr5-result');
+            const coolguardResult = document.getElementById('coolguard-result');
+            const pvc20Select = document.getElementById('pvc20-select');
+            const pvc60Select = document.getElementById('pvc60-select');
+            const xr5Select = document.getElementById('xr5-select');
+            const coolguardSelect = document.getElementById('coolguard-select');
+
+            // Only reset disabled state, not checked state
+            [pvc20Select, pvc60Select, xr5Select, coolguardSelect].forEach(checkbox => {
+                checkbox.disabled = true;
+            });
+
+            if (chemicalData[chemical]) {
+                const data = chemicalData[chemical];
+                
+                function setCompatibility(element, checkbox, value) {
+                    element.textContent = value || 'No data';
+                    element.className = '';
+                    if (value) {
+                        if (value.toLowerCase().includes('not recommended')) {
+                            element.classList.add('not-recommended');
+                            checkbox.disabled = true;
+                            checkbox.checked = false; // Uncheck if not recommended
+                        } else if (value.toLowerCase().includes('little or no effect')) {
+                            element.classList.add('little-effect');
+                            checkbox.disabled = false;
+                        } else if (value.toLowerCase().includes('some effect')) {
+                            element.classList.add('some-effect');
+                            checkbox.disabled = false;
+                        }
+                    }
+                }
+
+                setCompatibility(pvc20Result, pvc20Select, data.pvc20);
+                setCompatibility(pvc60Result, pvc60Select, data.pvc60);
+                setCompatibility(xr5Result, xr5Select, data.xr5);
+                setCompatibility(coolguardResult, coolguardSelect, data.coolguard);
+            } else {
+                // If no data found, show "No data" for all materials
+                pvc20Result.textContent = 'No data';
+                pvc60Result.textContent = 'No data';
+                xr5Result.textContent = 'No data';
+                coolguardResult.textContent = 'No data';
+            }
+        }
+
+        // Add event listeners for both liquid type inputs
+        document.getElementById('liquid-type').addEventListener('input', function(e) {
+            updateCompatibilityTable(e.target.value);
+        });
+
+        document.getElementById('unlisted-liquid').addEventListener('input', function(e) {
+            updateCompatibilityTable(e.target.value);
+        });
+
+        // Quote form handling
+        const modal = document.getElementById('quote-modal');
+        const quoteButton = document.getElementById('quote-button');
+        const closeModal = document.querySelector('.close-modal');
+        const quoteForm = document.getElementById('quote-form');
+
+        quoteButton.addEventListener('click', function() {
+            // Get the current values
+            const length = document.getElementById('length').value;
+            const width = document.getElementById('width').value;
+            const height = document.getElementById('height').value;
+            const capacity = document.getElementById('capacity').value;
+            const unlistedLiquid = document.getElementById('unlisted-liquid').value;
+            const listedLiquid = document.getElementById('liquid-type').value;
+            // Prioritize unlisted liquid if it exists
+            const liquidType = unlistedLiquid || listedLiquid;
+            
+            // Get selected materials
+            let selectedMaterials = [];
+            const checkboxes = document.querySelectorAll('.material-checkbox');
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    let materialName = checkbox.closest('tr').cells[0].textContent;
+                    // Simplify PVC names
+                    if (materialName.includes('900gsm PVC')) {
+                        materialName = '900gsm PVC';
+                    }
+                    selectedMaterials.push(materialName);
+                }
+            });
+
+            // Remove duplicate PVC entries if both temperatures were selected
+            selectedMaterials = [...new Set(selectedMaterials)];
+
+            // Update the quote summary
+            document.getElementById('quote-length').textContent = length ? `${length} meters` : 'Not specified';
+            document.getElementById('quote-width').textContent = width ? `${width} meters` : 'Not specified';
+            document.getElementById('quote-height').textContent = height ? `${height} meters` : 'Not specified';
+            document.getElementById('quote-capacity').textContent = capacity ? 
+                `${Number(capacity).toLocaleString()} litres` : 'Not specified';
+            document.getElementById('quote-liquid').textContent = liquidType || 'Not specified';
+            
+            // Format materials as a list
+            if (selectedMaterials.length > 0) {
+                const materialList = document.createElement('ul');
+                materialList.className = 'material-list';
+                selectedMaterials.forEach(material => {
+                    const li = document.createElement('li');
+                    li.textContent = material;
+                    materialList.appendChild(li);
+                });
+                document.getElementById('quote-material').innerHTML = '';
+                document.getElementById('quote-material').appendChild(materialList);
+            } else {
+                document.getElementById('quote-material').textContent = 'No materials selected';
+            }
+
+            // Show the modal
+            modal.style.display = 'block';
+        });
+
+        closeModal.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        quoteForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Here you would typically send the form data to your server
+            alert('Thank you for your quote request. We will contact you shortly.');
+            modal.style.display = 'none';
+            quoteForm.reset();
+        });
+
+        // Add this at the beginning of your script section
+        document.getElementById('country').addEventListener('focus', function(e) {
+            // Clear the default value when the field is focused
+            if (e.target.value === 'Australia') {
+                e.target.value = '';
+            }
+        });
+
+        document.getElementById('country').addEventListener('blur', function(e) {
+            // If the field is empty when losing focus, restore the default value
+            if (!e.target.value) {
+                e.target.value = 'Australia';
+            }
+        });
+    </script>
+</body>
+</html> 
